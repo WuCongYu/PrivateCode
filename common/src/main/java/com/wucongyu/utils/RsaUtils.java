@@ -1,5 +1,8 @@
 package com.wucongyu.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +18,7 @@ import java.util.Base64;
  */
 public class RsaUtils {
     private static final int DEFAULT_KEY_SIZE = 2048;
-
+    private static final Logger logger = LoggerFactory.getLogger(RsaUtils.class);
     /**
      * @param filename 公钥保存路径，相对于classpath
      */
@@ -79,7 +82,7 @@ public class RsaUtils {
         if (!dest.exists()){
             final boolean newFile = dest.createNewFile();
             if (!newFile) {
-
+                logger.warn("文件创建失败：{}",destPath);
             }
         }
         Files.write(dest.toPath(), bytes);
