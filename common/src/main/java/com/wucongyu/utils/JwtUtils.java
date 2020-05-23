@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -18,6 +20,7 @@ import java.util.UUID;
  */
 public class JwtUtils {
     private static final String JWT_PAYLOAD_USER_KEY = "user";
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     /**
      * @param userInfo 载荷中的数据
@@ -40,7 +43,8 @@ public class JwtUtils {
      * @return Jws<Claims>
      */
     private static Jws<Claims> parserToken(String token, PublicKey publicKey){
-        return Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
+        logger.info("token令牌：{}",token);
+        return Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(token);
     }
 
     public static String creteJTI(){
@@ -52,7 +56,7 @@ public class JwtUtils {
      * @param publicKey 公钥
      * @return 用户信息
      */
-    public static <T> Payload<T> getInfoFromToken(String token,PublicKey publicKey,Class<T> userType){
+    public static <T> Payload<T> getInfoFromToken(String token, PublicKey publicKey, Class<T> userType){
         Jws<Claims> claimsJws = parserToken(token, publicKey);
         Claims body = claimsJws.getBody();
         Payload<T> claims = new Payload<>();

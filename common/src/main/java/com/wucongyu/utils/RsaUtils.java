@@ -11,6 +11,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.logging.LogManager;
 
 /**
  * @author 吴聪宇
@@ -78,6 +79,7 @@ public class RsaUtils {
     }
 
     private static void writeFile(String destPath,byte[] bytes)throws IOException{
+        logger.info("保存密钥路径:{}",destPath);
         File dest = new File(destPath);
         if (!dest.exists()){
             final boolean newFile = dest.createNewFile();
